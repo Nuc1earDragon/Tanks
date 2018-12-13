@@ -66,6 +66,7 @@ function isOnMap(arg, k) {
 function bulletFly() {
     var bulletCrash = false;
     for (var k = 0; k < bullets.length; k++) {
+        
         context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y, 8, 8);
 
         switch (bullets[k].bulletPos) {

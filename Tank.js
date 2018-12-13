@@ -124,18 +124,18 @@ var bullets = [];
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
 
-function passfinding(Key, Tank) {
-    x1=parseInt((Tank.x)/16);
-    y1=parseInt((Tank.y)/16); 
-    x2=parseInt((Tank.x+31)/16);
-    y2=parseInt((Tank.y+31)/16);
+function passfinding(Key, tank) {
+    x1=parseInt((tank.x)/16);
+    y1=parseInt((tank.y)/16); 
+    x2=parseInt((tank.x+31)/16);
+    y2=parseInt((tank.y+31)/16);
     
     switch (Key) {
           
               case 37:
 
                 for (j=y1;j<=y2;j++){
-                  if (Tank.x<0) {return false}
+                  if (tank.x<0) {return false}
                     if (map[j][x1]!=0) {
                          return false}
                     }
@@ -146,7 +146,7 @@ function passfinding(Key, Tank) {
               case 38:
 
                 for (i=x1;i<=x2;i++){
-                  if (Tank.y<0) {return false}
+                  if (tank.y<0) {return false}
                     if (map[y1][i]!=0) {
                         return false}
                 }
@@ -156,7 +156,7 @@ function passfinding(Key, Tank) {
               case 39:
 
                 for (j=y1;j<=y2;j++){
-                  if ((Tank.x+32)>416) {return false}
+                  if ((tank.x+32)>416) {return false}
                     if (map[j][x2]!=0) {
                         return false}
                     }
@@ -167,7 +167,7 @@ function passfinding(Key, Tank) {
               case 40:
 
                 for (i=x1;i<=x2;i++){
-                  if ((Tank.y+32)>416) {return false}
+                  if ((tank.y+32)>416) {return false}
                     if (map[y2][i]!=0) {
                          return false}
                     }
