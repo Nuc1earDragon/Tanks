@@ -14,8 +14,6 @@
                         createBot();
                         botMove();
                         drawCrash();
-                    //        document.getElementById('send1').value = bullets[0].x;
-                    //        document.getElementById('send2').value = bullets[0].y;
                         }
                         
                        , 25);

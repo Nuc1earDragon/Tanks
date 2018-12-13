@@ -55,7 +55,7 @@ function passfindingBullet(Bullet) {
     }
     return false;
 }
-function battlefield(arg, k) {
+function isOnMap(arg, k) {
     if ((arg.x < 0) || (arg.x > canvas.width) || (arg.y < 0) || (arg.y > canvas.height)) {
         bullets.splice(k, 1);
         return false;
@@ -71,27 +71,25 @@ function bulletFly() {
         switch (bullets[k].bulletPos) {
             case "left":
                 bullets[k].x -= bullets[k].speed;
-                pass = battlefield(bullets[k], k);
-                if (pass == true) { bulletCrash = passfindingBullet(bullets[k]); }
+                if (isOnMap(bullets[k], k)) { 
+                    bulletCrash = passfindingBullet(bullets[k]); 
+                }
                 break;
             case "up":
                 bullets[k].y -= bullets[k].speed;
-                pass = battlefield(bullets[k], k);
-                if (pass == true) {
+                if (isOnMap(bullets[k], k)) {
                     bulletCrash = passfindingBullet(bullets[k]);
                 }
                 break;
             case "right":
                 bullets[k].x += bullets[k].speed;
-                pass = battlefield(bullets[k], k);
-                if (pass == true) {
+                if (isOnMap(bullets[k], k)) {
                     bulletCrash = passfindingBullet(bullets[k]);
                 }
                 break;
             case "down":
                 bullets[k].y += bullets[k].speed;
-                pass = battlefield(bullets[k], k);
-                if (pass == true) {
+                if (isOnMap(bullets[k], k)) {
                     bulletCrash = passfindingBullet(bullets[k]);
                 }
                 break;

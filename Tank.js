@@ -82,8 +82,8 @@ function Bullet(X, Y, bulletPos ) {
   this.y= Y;
   this.bulletPos= bulletPos;
   this.enemy = false;
-  this.bulletCrashIcon = new Image();
-  this.bulletCrashIcon.src="./img/hit1.png";
+  this.CrashIcon = new Image();
+  this.CrashIcon.src="./img/hit1.png";
   this.speed = 2;
   function getImage(bulletPos){
     var src="";
