@@ -9,7 +9,7 @@ function Bullet(X, Y, bulletPos ) {
     this.crashIcon.src="./img/hit1.png";
     this.speed = 2;
   }
-  Bullet.prototype.getCrashed = function (bullet, k){
+  Bullet.prototype.getCrashed = function (bullet){
         var i1 = 0;
         var j1 = 0;
         for (x=bullet.x+1; x<=(bullet.x+7); x+=6){
@@ -21,15 +21,14 @@ function Bullet(X, Y, bulletPos ) {
                 }      
             } 
         }
-        bullet.crashed = true ;
         bullet.image = bullet.crashIcon;
         bullet.x-=10;
         bullet.y-=10;
         bullet.speed = 0;
-        setTimeout(function(){destroy(k)}, 300);
+        setTimeout(function(){destroy(bullet)}, 300);
     }
-function destroy (k) {
-    bullets.splice(k,1);
+function destroy (bullet) {
+    bullet.crashed = true ;
 }
   Bullet.prototype.getImage = function(bulletPos) {
       var src="";
@@ -39,11 +38,11 @@ function destroy (k) {
       return image;
     };
 
-function passfindingBullet(Bullet) {
-    x1 = parseInt((Bullet.x) / 16);
-    y1 = parseInt((Bullet.y + 1) / 16);
-    x2 = parseInt((Bullet.x + 7) / 16);
-    y2 = parseInt((Bullet.y + 7) / 16);
+function passfindingBullet(bullet) {
+    x1 = parseInt((bullet.x) / 16);
+    y1 = parseInt((bullet.y + 1) / 16);
+    x2 = parseInt((bullet.x + 7) / 16);
+    y2 = parseInt((bullet.y + 7) / 16);
     if (x2 > 25) {
         x2 = 25;
     };
@@ -75,16 +74,15 @@ function isOnMap(arg, k) {
     else return true;
 
 }
-function isNotCrashed(bullet, k) {
+function isNotCrashed(bullet) {
     var bulletCrash = false;
-    if (isOnMap(bullet, k)) {
+    if (isOnMap(bullet)) {
         bulletCrash = passfindingBullet(bullet);
     }
     return bulletCrash;
 }
 function bulletFly() {
     for (var k = 0; k < bullets.length; k++) {
-        
         context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y);
         if (bullets[k].speed != 0){
         switch (bullets[k].bulletPos) {
@@ -102,11 +100,14 @@ function bulletFly() {
                 break;
         };
 
-        if (!isNotCrashed(bullets[k],k)) {
-            bullets[k].getCrashed(bullets[k], k);
+        if (!isNotCrashed(bullets[k])) {
+            bullets[k].getCrashed(bullets[k]);
         }
         }
     }
+bullets= bullets.filter(function(bullet){
+    return !bullet.crashed ;
+});
 }
 function tankBullet(e, Tank, enemy) {
     if (e == 32) {
