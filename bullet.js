@@ -33,9 +33,6 @@ function Bullet(X, Y, bulletPos ) {
         bullet.speed = 0;
         setTimeout(function(){destroy(bullet)}, 300);
     }
-function destroy (bullet) {
-    bullet.crashed = true ;
-}
   Bullet.prototype.getImage = function(bulletPos) {
       var src="";
       src="./img/bullet-" + bulletPos + ".png";
@@ -44,24 +41,24 @@ function destroy (bullet) {
       return image;
     };
 
+function destroy (bullet) {
+        bullet.crashed = true ;
+    }
 function mainTankBullet(e){
         tankBullet(e.keyCode, mainTank);
       }
 
 function passfindingBullet(bullet) {
-    x1 = parseInt((bullet.x) / 16);
-    y1 = parseInt((bullet.y + 1) / 16);
-    x2 = parseInt((bullet.x + 7) / 16);
-    y2 = parseInt((bullet.y + 7) / 16);
-    if (x2 > 25) {
-        x2 = 25;
+    size = elSize (bullet);
+    if (size.x2 > 25) {
+        size.x2 = 25;
     };
-    if (y2 > 25) {
-        y2 = 25;
+    if (size.y2 > 25) {
+        size.y2 = 25;
     };
     var i2 = 0, j2 = 0; a = true;
-    for (j2 = y1; j2 <= y2; j2++) {
-        for (i2 = x1; i2 <= x2; i2++) {
+    for (j2 = size.y1; j2 <= size.y2; j2++) {
+        for (i2 = size.x1; i2 <= size.x2; i2++) {
             if (map[j2][i2] != '0') {
                 a = false;
             }
@@ -115,9 +112,9 @@ function bulletFly() {
         }
         }
     }
-bullets= bullets.filter(function(bullet){
+    bullets = bullets.filter(function(bullet){
     return !bullet.crashed ;
-});
+    });
 }
 function tankBullet(e, tank) {
     if (e == 32) {
@@ -156,25 +153,24 @@ function tankBullet(e, tank) {
     }
 
 }
-function elSize(el, type) {
+function elSize(el) {
     var size = {
         x1: new Number(),
         x2: new Nubmer(),
         y1: new Number(),
         y2: new Number()
     }
-    if (type == "tank") {
-        size.x1 = parseInt((el.x) / 16);
-        size.y1 = parseInt((el.y) / 16);
-        size.x2 = parseInt((el.x + 31) / 16);
-        size.y2 = parseInt((el.y + 31) / 16);
-    }
-    if (type == "bullet") {
+    if (el.bulletPos != undefined ) {
         size.x1 = parseInt((el.x) / 16);
         size.y1 = parseInt((el.y + 1) / 16);
         size.x2 = parseInt((el.x + 7) / 16);
         size.y2 = parseInt((el.y + 7) / 16);
     }
-
+    else {
+        size.x1 = parseInt((el.x) / 16);
+        size.y1 = parseInt((el.y) / 16);
+        size.x2 = parseInt((el.x + 31) / 16);
+        size.y2 = parseInt((el.y + 31) / 16);
+    }
     return size;
 }

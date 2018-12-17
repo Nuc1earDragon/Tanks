@@ -40,13 +40,18 @@ function Tank(X,Y,type) {
       image.src=src;
       return image;
     }
+
+
+
+//**************************************************************************************************************************************************
+//**************************************************************************************************************************************************
+
     
 
 var mainTank = new Tank(192,208,"main");
 mainTank.caseOn = 38;
 var move_count= 1;
 mainTank.position=mainTank.up.main;
-//var n=-1;
 var fps = 1000/60;
 var bullets = [];
 
@@ -56,20 +61,19 @@ var bullets = [];
 
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
+function mainTankMove(e){
+  tankMove(e.keyCode, mainTank);
+}
 
 function passfinding(Key, tank) {
-    x1=parseInt((tank.x)/16);
-    y1=parseInt((tank.y)/16); 
-    x2=parseInt((tank.x+31)/16);
-    y2=parseInt((tank.y+31)/16);
-    
+    size = elSize(tank);
     switch (Key) {
           
               case 37:
 
-                for (j=y1;j<=y2;j++){
+                for (j=size.y1;j<=size.y2;j++){
                   if (tank.x<0) {return false}
-                    if (map[j][x1]!=0) {
+                    if (map[j][size.x1]!=0) {
                          return false}
                     }
                     
@@ -78,9 +82,9 @@ function passfinding(Key, tank) {
                
               case 38:
 
-                for (i=x1;i<=x2;i++){
+                for (i=size.x1;i<=size.x2;i++){
                   if (tank.y<0) {return false}
-                    if (map[y1][i]!=0) {
+                    if (map[size.y1][i]!=0) {
                         return false}
                 }
                 
@@ -88,9 +92,9 @@ function passfinding(Key, tank) {
                   
               case 39:
 
-                for (j=y1;j<=y2;j++){
+                for (j=size.y1;j<=size.y2;j++){
                   if ((tank.x+32)>416) {return false}
-                    if (map[j][x2]!=0) {
+                    if (map[j][size.x2]!=0) {
                         return false}
                     }
                 
@@ -99,9 +103,9 @@ function passfinding(Key, tank) {
 
               case 40:
 
-                for (i=x1;i<=x2;i++){
+                for (i=size.x1;i<=size.x2;i++){
                   if ((tank.y+32)>416) {return false}
-                    if (map[y2][i]!=0) {
+                    if (map[size.y2][i]!=0) {
                          return false}
                     }
                 
@@ -171,8 +175,6 @@ function passfinding(Key, tank) {
               break;
           }
       }
-      function mainTankMove(e){
-        tankMove(e.keyCode, mainTank);
-      }
+
    
  
