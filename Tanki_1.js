@@ -2,9 +2,9 @@
                     drawMap();
                     context.drawImage(mainTank.up.main, mainTank.x, mainTank.y,30,30);
                     
-                    window.addEventListener("keydown", mainTankMove, true);
+                    window.addEventListener("keydown", mainTankMove);
                    
-                    window.addEventListener("keydown", mainTankBullet, true);
+                    window.addEventListener("keydown", mainTankBullet);
 
                    
                        setInterval(function (){
@@ -13,7 +13,6 @@
                         bulletFly();
                         createBot();
                         botMove();
-                        drawCrash();
                         }
                         
                        , 25);

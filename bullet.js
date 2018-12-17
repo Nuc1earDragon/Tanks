@@ -4,10 +4,33 @@ function Bullet(X, Y, bulletPos ) {
     this.y= Y;
     this.bulletPos= bulletPos;
     this.enemy = false;
-    this.CrashIcon = new Image();
-    this.CrashIcon.src="./img/hit1.png";
+    this.crashed = false;
+    this.crashIcon = new Image();
+    this.crashIcon.src="./img/hit1.png";
     this.speed = 2;
   }
+  Bullet.prototype.getCrashed = function (bullet, k){
+        var i1 = 0;
+        var j1 = 0;
+        for (x=bullet.x+1; x<=(bullet.x+7); x+=6){
+            for (y=bullet.y+1; y<=(bullet.y+7); y+=6){
+                i1 = parseInt(x / 16);
+                j1 = parseInt(y / 16);
+                if (isNotSteel(j1,i1)){
+                    map[j1][i1] = 0;
+                }      
+            } 
+        }
+        bullet.crashed = true ;
+        bullet.image = bullet.crashIcon;
+        bullet.x-=10;
+        bullet.y-=10;
+        bullet.speed = 0;
+        setTimeout(function(){destroy(k)}, 300);
+    }
+function destroy (k) {
+    bullets.splice(k,1);
+}
   Bullet.prototype.getImage = function(bulletPos) {
       var src="";
       switch (bulletPos){
@@ -31,38 +54,7 @@ function Bullet(X, Y, bulletPos ) {
       image.src=src;
       return image;
     };
-var crashedBullets = [];
-function CrashedBullet(X, Y) {
-    this.x = X;
-    this.y = Y;
-    this.time;
-    this.Image = {
-        main: getImage('main'),
-        alt: getImage('alt')
-    };
-    function getImage(arg) {
-        var scr = "";
-        if (arg = "main") {
-            src = "./img/hit1.png";
-        }
-        if (arg = "alt") {
-            src = "./img/hit2.png";
-        }
-        var image = new Image();
-        image.src = src;
-        return image;
-    }
-}
 
-function drawCrash() {
-    for (i = 0; i < crashedBullets.length; i++) {
-        context.drawImage(crashedBullets[i].Image.main, crashedBullets[i].x - 4, crashedBullets[i].y - 4);
-        crashedBullets[i].time++;
-        if (crashedBullets[i].time == 30) {
-            crashedBullets.splice(i, 1);
-        }
-    }
-}
 function passfindingBullet(Bullet) {
     x1 = parseInt((Bullet.x) / 16);
     y1 = parseInt((Bullet.y + 1) / 16);
@@ -74,16 +66,22 @@ function passfindingBullet(Bullet) {
     if (y2 > 25) {
         y2 = 25;
     };
-    var i2 = 0, j2 = 0;
+    var i2 = 0, j2 = 0; a = true;
     for (j2 = y1; j2 <= y2; j2++) {
         for (i2 = x1; i2 <= x2; i2++) {
-            if (map[j2][i2] !== '0') {
-                return true
+            if (map[j2][i2] != '0') {
+                a = false;
             }
         }
 
     }
-    return false;
+    return a;
+}
+function isNotSteel(j1, i1) {
+   if  (map[j1][i1] !== 'S'){
+       return true;
+   }
+    else return false;    
 }
 function isOnMap(arg, k) {
     if ((arg.x < 0) || (arg.x > canvas.width) || (arg.y < 0) || (arg.y > canvas.height)) {
@@ -93,60 +91,36 @@ function isOnMap(arg, k) {
     else return true;
 
 }
-function bulletFly() {
+function isNotCrashed(bullet, k) {
     var bulletCrash = false;
+    if (isOnMap(bullet, k)) {
+        bulletCrash = passfindingBullet(bullet);
+    }
+    return bulletCrash;
+}
+function bulletFly() {
     for (var k = 0; k < bullets.length; k++) {
         
-        context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y, 8, 8);
-
+        context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y);
+        if (bullets[k].speed != 0){
         switch (bullets[k].bulletPos) {
             case "left":
                 bullets[k].x -= bullets[k].speed;
-                if (isOnMap(bullets[k], k)) { 
-                    bulletCrash = passfindingBullet(bullets[k]); 
-                }
                 break;
             case "up":
                 bullets[k].y -= bullets[k].speed;
-                if (isOnMap(bullets[k], k)) {
-                    bulletCrash = passfindingBullet(bullets[k]);
-                }
                 break;
             case "right":
                 bullets[k].x += bullets[k].speed;
-                if (isOnMap(bullets[k], k)) {
-                    bulletCrash = passfindingBullet(bullets[k]);
-                }
                 break;
             case "down":
                 bullets[k].y += bullets[k].speed;
-                if (isOnMap(bullets[k], k)) {
-                    bulletCrash = passfindingBullet(bullets[k]);
-                }
                 break;
         };
 
-
-
-        if (bulletCrash == true) {
-            var i1 = 0;
-            var j1 = 0;
-            newBullet = new CrashedBullet(bullets[k].x, bullets[k].y);
-            newBullet.time = 0;
-            crashedBullets.push(newBullet);
-            i1 = parseInt((bullets[k].x + 1) / 16);
-            j1 = parseInt((bullets[k].y + 1) / 16);
-            map[j1][i1] = 0;
-            i1 = parseInt((bullets[k].x + 7) / 16);
-            map[j1][i1] = 0;
-            j1 = parseInt((bullets[k].y + 7) / 16);
-            map[j1][i1] = 0;
-            i1 = parseInt((bullets[k].x + 1) / 16);
-            map[j1][i1] = 0;
-            bullets.splice(k, 1);
+        if (!isNotCrashed(bullets[k],k)) {
+            bullets[k].getCrashed(bullets[k], k);
         }
-        if (bulletCrash == 'Steel') {
-            bullets.splice(k, 1);
         }
     }
 }
