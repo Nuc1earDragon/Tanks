@@ -1,3 +1,36 @@
+function Bullet(X, Y, bulletPos ) {
+    this.image = this.getImage(bulletPos);
+    this.x= X;
+    this.y= Y;
+    this.bulletPos= bulletPos;
+    this.enemy = false;
+    this.CrashIcon = new Image();
+    this.CrashIcon.src="./img/hit1.png";
+    this.speed = 2;
+  }
+  Bullet.prototype.getImage = function(bulletPos) {
+      var src="";
+      switch (bulletPos){
+        case "up":
+        src="./img/bullet-up.png";
+        break;
+  
+        case  "down":  
+        src="./img/bullet-down.png";
+        break;
+  
+        case "right":
+        src="./img/bullet-right.png";
+        break;
+  
+        case "left":
+        src="./img/bullet-left.png";
+        break;
+      }
+      var image= new Image();
+      image.src=src;
+      return image;
+    };
 var crashedBullets = [];
 function CrashedBullet(X, Y) {
     this.x = X;
@@ -44,10 +77,7 @@ function passfindingBullet(Bullet) {
     var i2 = 0, j2 = 0;
     for (j2 = y1; j2 <= y2; j2++) {
         for (i2 = x1; i2 <= x2; i2++) {
-            if (map[j2][i2] == 'S') {
-                return 'Steel'
-            }
-            if (map[j2][i2] == 'K') {
+            if (map[j2][i2] !== '0') {
                 return true
             }
         }

@@ -1,28 +1,30 @@
 function Tank(X,Y,type) {
   this.up =  {
-    main : getImage(type, "up","main"),
-    alt : getImage(type, "up","alt") ,
+    main : this.getImage(type, "up","main"),
+    alt : this.getImage(type, "up","alt") ,
   };
   this.left= {
-  main : getImage(type, "left", "main"),
-  alt : getImage(type, "left", "alt"),
-  hit: getImage(type, "left", "hit"),
+  main : this.getImage(type, "left", "main"),
+  alt : this.getImage(type, "left", "alt"),
+  hit: this.getImage(type, "left", "hit"),
   };
   this.right= {
-    main : getImage(type, "right", "main"),
-    alt : getImage(type, "right", "alt"),
-    hit: getImage(type, "right", "hit"),
+    main : this.getImage(type, "right", "main"),
+    alt : this.getImage(type, "right", "alt"),
+    hit: this.getImage(type, "right", "hit"),
     };
   this.down= {
-    main : getImage(type, "down", "main"),
-    alt:  getImage(type, "down", "alt"),
-    hit: getImage(type, "down", "hit"),
+    main : this.getImage(type, "down", "main"),
+    alt:  this.getImage(type, "down", "alt"),
+    hit: this.getImage(type, "down", "hit"),
     };
   this.x= X;
   this.y= Y;
   this.position=new Image();
   this.caseOn = 40;
-     function getImage(tankType, direction,alternative) {
+  }
+
+  Tank.prototype.getImage=function(tankType, direction,alternative) {
        var src="";
       switch (tankType){
         case "main": 
@@ -74,41 +76,8 @@ function Tank(X,Y,type) {
       image.src=src;
       return image;
     }
-  }
     
-function Bullet(X, Y, bulletPos ) {
-  this.image = getImage(bulletPos);
-  this.x= X;
-  this.y= Y;
-  this.bulletPos= bulletPos;
-  this.enemy = false;
-  this.CrashIcon = new Image();
-  this.CrashIcon.src="./img/hit1.png";
-  this.speed = 2;
-  function getImage(bulletPos){
-    var src="";
-    switch (bulletPos){
-      case "up":
-      src="./img/bullet-up.png";
-      break;
 
-      case  "down":  
-      src="./img/bullet-down.png";
-      break;
-
-      case "right":
-      src="./img/bullet-right.png";
-      break;
-
-      case "left":
-      src="./img/bullet-left.png";
-      break;
-    }
-    var image= new Image();
-    image.src=src;
-    return image;
-  };
-}
 var mainTank = new Tank(192,208,"main");
 mainTank.caseOn = 38;
 var move_count= 1;
