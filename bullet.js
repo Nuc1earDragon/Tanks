@@ -33,23 +33,7 @@ function destroy (k) {
 }
   Bullet.prototype.getImage = function(bulletPos) {
       var src="";
-      switch (bulletPos){
-        case "up":
-        src="./img/bullet-up.png";
-        break;
-  
-        case  "down":  
-        src="./img/bullet-down.png";
-        break;
-  
-        case "right":
-        src="./img/bullet-right.png";
-        break;
-  
-        case "left":
-        src="./img/bullet-left.png";
-        break;
-      }
+      src="./img/bullet-" + bulletPos + ".png";
       var image= new Image();
       image.src=src;
       return image;

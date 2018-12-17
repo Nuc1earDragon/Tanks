@@ -1,22 +1,22 @@
 function Tank(X,Y,type) {
   this.up =  {
-    main : this.getImage(type, "up","main"),
-    alt : this.getImage(type, "up","alt") ,
+    main : this.getImage(type, "up","s1"),
+    alt : this.getImage(type, "up","s2") ,
   };
   this.left= {
-  main : this.getImage(type, "left", "main"),
-  alt : this.getImage(type, "left", "alt"),
-  hit: this.getImage(type, "left", "hit"),
+  main : this.getImage(type, "left", "s1"),
+  alt : this.getImage(type, "left", "s2"),
+//  hit: this.getImage(type, "left", "blink"),
   };
   this.right= {
-    main : this.getImage(type, "right", "main"),
-    alt : this.getImage(type, "right", "alt"),
-    hit: this.getImage(type, "right", "hit"),
+    main : this.getImage(type, "right", "s1"),
+    alt : this.getImage(type, "right", "s2"),
+ //   hit: this.getImage(type, "right", "blink"),
     };
   this.down= {
-    main : this.getImage(type, "down", "main"),
-    alt:  this.getImage(type, "down", "alt"),
-    hit: this.getImage(type, "down", "hit"),
+    main : this.getImage(type, "down", "s1"),
+    alt:  this.getImage(type, "down", "s2"),
+ //   hit: this.getImage(type, "down", "blink"),
     };
   this.x= X;
   this.y= Y;
@@ -28,48 +28,10 @@ function Tank(X,Y,type) {
        var src="";
       switch (tankType){
         case "main": 
-        switch(direction){
-          case "up":
-          if (alternative=="main") src="./img/tank1-up-s1_1.png";
-          else src="./img/tank1-up-s2_1.png";
-          break;
-          case "down":
-          if (alternative=="main")  src="./img/tank1-down-s1_1.png";
-          else src="./img/tank1-down-s2_1.png";
-          break;
-          case "right":
-          if (alternative=="main")  src= "./img/tank1-right-s1_1.png";
-          else src="./img/tank1-right-s2_1.png";
-          break;
-          case "left":
-          if (alternative=="main")  src="./img/tank1-left-s1_1.png";
-          else src="./img/tank1-left-s2_1.png";
-          break;
-        };
+        src="./img/tank1-" + direction + "-" + alternative + "_1.png";
         break;
         case "bot":
-        switch(direction){
-          case "up":
-          if (alternative=="main") src="./img/normal-bot-up-s1_1.png";
-          else  if(alternative=="alt") src="./img/normal-bot-up-s2_1.png";
-          else src="./img/normal-bot-up-s1-blink.png";
-          break;
-          case "down":
-          if (alternative=="main")  src="./img/normal-bot-down-s1_1.png";
-          else  if(alternative=="alt") src="./img/normal-bot-down-s2_1.png";
-          else src="./img/normal-bot-down-s1-blink.png";
-          break;
-          case "right":
-          if (alternative=="main")   src= "./img/normal-bot-right-s1_1.png";
-          else  if(alternative=="alt")  src="./img/normal-bot-right-s2_1.png";
-          else src="./img/normal-bot-right-s1-blink.png";
-          break;
-          case "left":
-          if (alternative=="main")  src="./img/normal-bot-left-s1_1.png";
-          else if(alternative=="alt") src="./img/normal-bot-left-s2_1.png";
-          else src="./img/normal-bot-left-s1-blink.png";
-          break;
-        };
+        src="./img/normal-bot-"+direction+"-"+alternative+"_1.png";
         break;
       }
       var image= new Image();
