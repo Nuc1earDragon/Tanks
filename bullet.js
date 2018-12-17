@@ -10,12 +10,18 @@ function Bullet(X, Y, bulletPos ) {
     this.speed = 2;
   }
   Bullet.prototype.getCrashed = function (bullet){
+      if (bullet.crashed == true){
+          return;
+      };
         var i1 = 0;
         var j1 = 0;
         for (x=bullet.x+1; x<=(bullet.x+7); x+=6){
             for (y=bullet.y+1; y<=(bullet.y+7); y+=6){
                 i1 = parseInt(x / 16);
                 j1 = parseInt(y / 16);
+                if (i1>25 || j1>25) {
+                    continue;
+                }
                 if (isNotSteel(j1,i1)){
                     map[j1][i1] = 0;
                 }      
@@ -37,6 +43,10 @@ function destroy (bullet) {
       image.src=src;
       return image;
     };
+
+function mainTankBullet(e){
+        tankBullet(e.keyCode, mainTank);
+      }
 
 function passfindingBullet(bullet) {
     x1 = parseInt((bullet.x) / 16);
@@ -66,20 +76,20 @@ function isNotSteel(j1, i1) {
    }
     else return false;    
 }
-function isOnMap(arg, k) {
-    if ((arg.x < 0) || (arg.x > canvas.width) || (arg.y < 0) || (arg.y > canvas.height)) {
-        bullets.splice(k, 1);
+function isOnMap(bullet) {
+    if ((bullet.x < 0) || (bullet.x > canvas.width) || (bullet.y < 0) || (bullet.y > canvas.height)) {
+        bullet.crashed = true ;
         return false;
     }
     else return true;
 
 }
-function isNotCrashed(bullet) {
+function isBulletCrashed(bullet) {
     var bulletCrash = false;
     if (isOnMap(bullet)) {
         bulletCrash = passfindingBullet(bullet);
     }
-    return bulletCrash;
+    return !bulletCrash;
 }
 function bulletFly() {
     for (var k = 0; k < bullets.length; k++) {
@@ -100,7 +110,7 @@ function bulletFly() {
                 break;
         };
 
-        if (!isNotCrashed(bullets[k])) {
+        if (isBulletCrashed(bullets[k])) {
             bullets[k].getCrashed(bullets[k]);
         }
         }
@@ -109,47 +119,40 @@ bullets= bullets.filter(function(bullet){
     return !bullet.crashed ;
 });
 }
-function tankBullet(e, Tank, enemy) {
+function tankBullet(e, tank) {
     if (e == 32) {
-        switch (Tank.caseOn) {
+        switch (tank.caseOn) {
             case 37:
 
-                var newBullet = new Bullet(Tank.x, Tank.y, "left");
-                newBullet.x = Tank.x - 8;
-                newBullet.y = Tank.y + 10;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+                var newBullet = new Bullet(tank.x, tank.y, "left");
+                newBullet.x = tank.x - 8;
+                newBullet.y = tank.y + 10;
                 break;
 
             case 38:
 
-                var newBullet = new Bullet(Tank.x, Tank.y, "up")
-                newBullet.x = Tank.x + 12;
-                newBullet.y = Tank.y - 8;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+                var newBullet = new Bullet(tank.x, tank.y, "up")
+                newBullet.x = tank.x + 12;
+                newBullet.y = tank.y - 8;
                 break;
 
             case 39:
 
-                var newBullet = new Bullet(Tank.x, Tank.y, "right")
-                newBullet.x = Tank.x + 30;
-                newBullet.y = Tank.y + 10;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+                var newBullet = new Bullet(tank.x, tank.y, "right")
+                newBullet.x = tank.x + 30;
+                newBullet.y = tank.y + 10;
                 break;
 
             case 40:
 
-                var newBullet = new Bullet(Tank.x, Tank.y, "down")
-                newBullet.x = Tank.x + 12;
-                newBullet.y = Tank.y + 30;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+                var newBullet = new Bullet(tank.x, tank.y, "down")
+                newBullet.x = tank.x + 12;
+                newBullet.y = tank.y + 30;
                 break;
 
         }
-        if (Tank != mainTank) { bullets[bullets.length - 1].enemy = true };
+        newBullet.enemy = tank.enemy;
+        bullets.push(newBullet);
     }
 
 }
@@ -172,5 +175,6 @@ function elSize(el, type) {
         size.x2 = parseInt((el.x + 7) / 16);
         size.y2 = parseInt((el.y + 7) / 16);
     }
+
     return size;
 }

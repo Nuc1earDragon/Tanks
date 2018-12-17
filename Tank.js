@@ -22,6 +22,8 @@ function Tank(X,Y,type) {
   this.y= Y;
   this.position=new Image();
   this.caseOn = 40;
+  this.enemy = true;
+  this.speed = 2;
   }
 
   Tank.prototype.getImage=function(tankType, direction,alternative) {
@@ -110,69 +112,67 @@ function passfinding(Key, tank) {
     }
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
-  function tankMove(e, Tank,speed) {
+  function tankMove(e, tank) {
    
     switch (e) {
             
           
               case 37:
-              Tank.x -= speed;
-              pass=passfinding(e, Tank);
-              if (Tank.caseOn!=37 || pass!=true) {Tank.x +=speed;}
-              Tank.caseOn=37;
-              if (Tank.position == Tank.left.alt) {
-                Tank.position = Tank.left.main;
+              tank.x -= tank.speed;
+              pass=passfinding(e, tank);
+              if (tank.caseOn!=37 || pass!=true) {tank.x +=tank.speed;}
+              tank.caseOn=37;
+              if (tank.position == tank.left.alt) {
+                tank.position = tank.left.main;
               }
               else {
-                Tank.position = Tank.left.alt;
+                tank.position = tank.left.alt;
               }
               
               break;
           
               case 38:
-              Tank.y -= speed;
-              pass=passfinding(e, Tank);
-              if (Tank.caseOn!=38 || pass!=true) {Tank.y +=speed;}
-              Tank.caseOn=38;
-              if (Tank.position == Tank.up.alt) {
-                Tank.position = Tank.up.main;
+              tank.y -= tank.speed;
+              pass=passfinding(e, tank);
+              if (tank.caseOn!=38 || pass!=true) {tank.y +=tank.speed;}
+              tank.caseOn=38;
+              if (tank.position == tank.up.alt) {
+                tank.position = tank.up.main;
               }
               else {
-                Tank.position = Tank.up.alt;
+                tank.position = tank.up.alt;
               }
               break;
 
               case 39:
-              Tank.x += speed;
-              pass=passfinding(e, Tank);
-              if (Tank.caseOn!=39 || pass!=true) {Tank.x -=speed;}
-             Tank.caseOn=39;
-              if (Tank.position == Tank.right.alt) {
-                Tank.position =Tank.right.main;
+              tank.x += tank.speed;
+              pass=passfinding(e, tank);
+              if (tank.caseOn!=39 || pass!=true) {tank.x -=tank.speed;}
+             tank.caseOn=39;
+              if (tank.position == tank.right.alt) {
+                tank.position =tank.right.main;
               }
               else {
-                Tank.position = Tank.right.alt;
+                tank.position = tank.right.alt;
               }
               break;
 
               case 40:
-              Tank.y += speed;
-              pass=passfinding(e, Tank);
-              if (Tank.caseOn!=40 || pass!=true) {Tank.y -=speed;}
-              Tank.caseOn=40;
-              if (Tank.position == Tank.down.alt) {
-                Tank.position = Tank.down.main;
+              tank.y += tank.speed;
+              pass=passfinding(e, tank);
+              if (tank.caseOn!=40 || pass!=true) {tank.y -=tank.speed;}
+              tank.caseOn=40;
+              if (tank.position == tank.down.alt) {
+                tank.position = tank.down.main;
               }
               else {
-                Tank.position = Tank.down.alt;
+                tank.position = tank.down.alt;
               }
               break;
           }
       }
       function mainTankMove(e){
-        tankMove(e.keyCode, mainTank,2);
+        tankMove(e.keyCode, mainTank);
       }
-      function mainTankBullet(e){
-        tankBullet(e.keyCode, mainTank,false);
-      }
+   
  

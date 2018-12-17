@@ -6,6 +6,7 @@ function createBot(){
     if (bots.length<3){
         var newBot= new Tank(startBotX,0,"bot");
         newBot.AI=40; 
+        newBot.speed = 1;
         bots.push(newBot);
         startBotX+=192;
         if (startBotX> 400){
@@ -16,13 +17,13 @@ function createBot(){
 function botMove(){
     time++;
     for (b=0; b<bots.length;b++){
-        context.drawImage(bots[b].position, bots[b].x, bots[b].y,30,30);
+        context.drawImage(bots[b].position, bots[b].x, bots[b].y,32,32);
         AInt(bots[b]);
-        tankMove(bots[b].AI, bots[b],1);
+        tankMove(bots[b].AI, bots[b]);
         if ((time/20) - (parseInt(time/20))==0){
             var randBullet=parseInt(100*Math.random());
             if (randBullet<50){
-                tankBullet(32, bots[b],true);
+                tankBullet(32, bots[b]);
             }
         }
        
@@ -108,14 +109,10 @@ function AItraking(Tank){
                 if ((0>x1)||(x1>H)||(0>y1)||(y1>W)){
                     continue;
                 }
-            //  try {
                 if ( grid[x1][y1] === 0 ) {
-            //      stop = false;
+
                   grid[x1][y1] = d + 1;
                 }
-          //    } catch (e) {
-           //     console.log(x + dx[k], e);
-          //    }
             }
           }
           }
@@ -151,7 +148,6 @@ function AItraking(Tank){
         d--;
         }
       
-     //   path[0] = [ax, ay];
       
         for (var p = path.length-1 ; p>0;p--) {
         path[p] = [path[p][0] * 16, path[p][1] * 16];

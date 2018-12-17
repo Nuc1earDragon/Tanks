@@ -14,7 +14,6 @@
                         createBot();
                         botMove();
                         }
-                        
                        , 25);
                        
                        
