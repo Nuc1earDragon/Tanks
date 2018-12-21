@@ -64,56 +64,21 @@ var bullets = [];
 function mainTankMove(e){
   tankMove(e.keyCode, mainTank);
 }
-
-function passfinding(Key, tank) {
-    size = elSize(tank);
-    switch (Key) {
-          
-              case 37:
-
-                for (j=size.y1;j<=size.y2;j++){
-                  if (tank.x<0) {return false}
-                    if (map[j][size.x1]!=0) {
-                         return false}
-                    }
-                    
-                return true;
-                  
-               
-              case 38:
-
-                for (i=size.x1;i<=size.x2;i++){
-                  if (tank.y<0) {return false}
-                    if (map[size.y1][i]!=0) {
-                        return false}
-                }
-                
-                return true;
-                  
-              case 39:
-
-                for (j=size.y1;j<=size.y2;j++){
-                  if ((tank.x+32)>416) {return false}
-                    if (map[j][size.x2]!=0) {
-                        return false}
-                    }
-                
-                return true;
-                  
-
-              case 40:
-
-                for (i=size.x1;i<=size.x2;i++){
-                  if ((tank.y+32)>416) {return false}
-                    if (map[size.y2][i]!=0) {
-                         return false}
-                    }
-                
-                return true;
-                  
-          
+function passfinding(obj){
+  size = elSize (obj);
+  var i2 = 0, 
+      j2 = 0; 
+      a = true;
+  for (j2 = size.y1; j2 <= size.y2; j2++) {
+      for (i2 = size.x1; i2 <= size.x2; i2++) {
+          if (map[j2][i2] != '0') {
+              a = false;
+          }
       }
-    }
+
+  }
+  return a;
+} 
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
   function tankMove(e, tank) {
@@ -123,7 +88,7 @@ function passfinding(Key, tank) {
           
               case 37:
               tank.x -= tank.speed;
-              pass=passfinding(e, tank);
+              pass=passfinding(tank);
               if (tank.caseOn!=37 || pass!=true) {tank.x +=tank.speed;}
               tank.caseOn=37;
               if (tank.position == tank.left.alt) {
@@ -137,7 +102,7 @@ function passfinding(Key, tank) {
           
               case 38:
               tank.y -= tank.speed;
-              pass=passfinding(e, tank);
+              pass=passfinding(tank);
               if (tank.caseOn!=38 || pass!=true) {tank.y +=tank.speed;}
               tank.caseOn=38;
               if (tank.position == tank.up.alt) {
@@ -150,7 +115,7 @@ function passfinding(Key, tank) {
 
               case 39:
               tank.x += tank.speed;
-              pass=passfinding(e, tank);
+              pass=passfinding(tank);
               if (tank.caseOn!=39 || pass!=true) {tank.x -=tank.speed;}
              tank.caseOn=39;
               if (tank.position == tank.right.alt) {
@@ -163,7 +128,7 @@ function passfinding(Key, tank) {
 
               case 40:
               tank.y += tank.speed;
-              pass=passfinding(e, tank);
+              pass=passfinding(tank);
               if (tank.caseOn!=40 || pass!=true) {tank.y -=tank.speed;}
               tank.caseOn=40;
               if (tank.position == tank.down.alt) {

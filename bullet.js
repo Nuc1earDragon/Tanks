@@ -48,25 +48,6 @@ function mainTankBullet(e){
         tankBullet(e.keyCode, mainTank);
       }
 
-function passfindingBullet(bullet) {
-    size = elSize (bullet);
-    if (size.x2 > 25) {
-        size.x2 = 25;
-    };
-    if (size.y2 > 25) {
-        size.y2 = 25;
-    };
-    var i2 = 0, j2 = 0; a = true;
-    for (j2 = size.y1; j2 <= size.y2; j2++) {
-        for (i2 = size.x1; i2 <= size.x2; i2++) {
-            if (map[j2][i2] != '0') {
-                a = false;
-            }
-        }
-
-    }
-    return a;
-}
 function isNotSteel(j1, i1) {
    if  (map[j1][i1] !== 'S'){
        return true;
@@ -74,7 +55,7 @@ function isNotSteel(j1, i1) {
     else return false;    
 }
 function isOnMap(bullet) {
-    if ((bullet.x < 0) || (bullet.x > canvas.width) || (bullet.y < 0) || (bullet.y > canvas.height)) {
+    if ((bullet.x < 0) || (bullet.x+8> canvas.width) || (bullet.y < 0) || (bullet.y+8> canvas.height)) {
         bullet.crashed = true ;
         return false;
     }
@@ -84,7 +65,7 @@ function isOnMap(bullet) {
 function isBulletCrashed(bullet) {
     var bulletCrash = false;
     if (isOnMap(bullet)) {
-        bulletCrash = passfindingBullet(bullet);
+        bulletCrash = passfinding(bullet);
     }
     return !bulletCrash;
 }
@@ -156,7 +137,7 @@ function tankBullet(e, tank) {
 function elSize(el) {
     var size = {
         x1: new Number(),
-        x2: new Nubmer(),
+        x2: new Number(),
         y1: new Number(),
         y2: new Number()
     }
