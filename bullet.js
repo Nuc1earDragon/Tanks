@@ -91,6 +91,9 @@ function bulletFly() {
         if (isBulletCrashed(bullets[k])) {
             bullets[k].getCrashed(bullets[k]);
         }
+        if (interceptBullet(bullets[k])) {
+            bullets[k].crashed = true;
+        }
         }
     }
     bullets = bullets.filter(function(bullet){
@@ -134,24 +137,51 @@ function tankBullet(e, tank) {
     }
 
 }
+/*function points(el,size){
+    size.A={
+        x: el.x,
+        y: el.y
+    };
+    size.B={
+        x: el.x+size.w,
+        y: el.y
+    };
+    size.C={
+        x: el.x+size.w,
+        y: el.y+size.h
+    };
+    size.D={
+        x: el.x,
+        y: el.y+size.h
+    };
+    return size;
+} */
 function elSize(el) {
     var size = {
         x1: new Number(),
         x2: new Number(),
         y1: new Number(),
-        y2: new Number()
+        y2: new Number(),
+        w: new Number(),
+        h: new Number()
     }
     if (el.bulletPos != undefined ) {
         size.x1 = parseInt((el.x) / 16);
         size.y1 = parseInt((el.y + 1) / 16);
         size.x2 = parseInt((el.x + 7) / 16);
         size.y2 = parseInt((el.y + 7) / 16);
+        size.w = 7;
+        size.h=7;
+       // size = points(el, size);
     }
     else {
         size.x1 = parseInt((el.x) / 16);
         size.y1 = parseInt((el.y) / 16);
         size.x2 = parseInt((el.x + 31) / 16);
         size.y2 = parseInt((el.y + 31) / 16);
+        size.w= 31;
+        size.h= 31;
+      //  size = points(el, size);
     }
     return size;
 }

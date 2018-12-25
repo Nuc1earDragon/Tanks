@@ -22,7 +22,7 @@ function Tank(X,Y,type) {
   this.y= Y;
   this.position=new Image();
   this.caseOn = 40;
-  this.enemy = true;
+  this.enemy = false;
   this.speed = 2;
   }
 
@@ -67,7 +67,7 @@ function mainTankMove(e){
 function passfinding(obj){
   size = elSize (obj);
   var i2 = 0, 
-      j2 = 0; 
+      j2 = 0, 
       a = true;
   for (j2 = size.y1; j2 <= size.y2; j2++) {
       for (i2 = size.x1; i2 <= size.x2; i2++) {
@@ -79,6 +79,51 @@ function passfinding(obj){
   }
   return a;
 } 
+
+function intercept(obj1,obj2){
+  var  size = elSize(obj1);
+  var dx = Math.abs(obj1.x - obj2.x);
+  var dy = Math.abs(obj1.y - obj2.y);
+  if (dx <= size.w){
+    if (dy <= size.h){
+      return true;
+    }
+    else return false;
+  }
+  else return false;
+}
+function interceptBullet(obj){
+  for (i=0 ; i<bullets.length; i++){
+      if (obj.enemy != bullets[i].enemy){
+        if (intercept(obj, bullets[i])){
+          return true;
+        }
+      }
+  }
+  return false;
+}
+/*function interceptTank(obj){
+  var  size = elSize(obj);
+  for (i=0 ; i<bots.length; i++){
+    var x = bots[i].x,
+        y = bots[i].y;
+      if (x == obj.x && y == obj.y){
+        continue;
+      }
+      if (obj.x <= x && x <= (obj.x+size.w)){
+        if (obj.y <= y && y <= (obj.y+size.h)){
+          return true;
+        }
+      }
+  }
+  if (!obj.enemy){
+    if (obj.x <= x && x <= (obj.x+size.w)){
+      if (obj.y <= y && y <= (obj.y+size.h)){
+        return true;
+      }
+    }
+  }
+} */
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
   function tankMove(e, tank) {

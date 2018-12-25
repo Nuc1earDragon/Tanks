@@ -7,6 +7,7 @@ function createBot(){
         var newBot= new Tank(startBotX,0,"bot");
         newBot.AI=40; 
         newBot.speed = 1;
+        newBot.enemy = true;
         bots.push(newBot);
         startBotX+=192;
         if (startBotX> 400){
