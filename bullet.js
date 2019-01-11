@@ -91,9 +91,9 @@ function bulletFly() {
         if (isBulletCrashed(bullets[k])) {
             bullets[k].getCrashed(bullets[k]);
         }
-        if (interceptBullet(bullets[k])) {
+    /*    if (interceptBullet(bullets[k])) {
             bullets[k].crashed = true;
-        }
+        } */
         }
     }
     bullets = bullets.filter(function(bullet){

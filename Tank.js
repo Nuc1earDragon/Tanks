@@ -25,7 +25,6 @@ function Tank(X,Y,type) {
   this.enemy = false;
   this.speed = 2;
   }
-
   Tank.prototype.getImage=function(tankType, direction,alternative) {
        var src="";
       switch (tankType){
@@ -40,7 +39,7 @@ function Tank(X,Y,type) {
       image.src=src;
       return image;
     }
-
+  Tank.prototype.explitIntercept = new TankInterceptor().explitIntercept;
 
 
 //**************************************************************************************************************************************************
@@ -80,12 +79,17 @@ function passfinding(obj){
   return a;
 } 
 
-function intercept(obj1,obj2){
-  var  size = elSize(obj1);
-  var dx = Math.abs(obj1.x - obj2.x);
-  var dy = Math.abs(obj1.y - obj2.y);
-  if (dx <= size.w){
-    if (dy <= size.h){
+/*function intercept(obj1,obj2){
+  var  size1 = elSize(obj1);
+  var  size2 = elSize(obj2);
+  var  dSizeX =  (size1.h - size2.h) /2 ;
+  var  dSizeY =  (size1.w - size2.w) /2 ;
+  var dx = Math.abs(obj1.x - obj2.x - dSizeX);
+  var dy = Math.abs(obj1.y - obj2.y - dSizeY);
+  var dh = (size1.h+size2.h)/2;
+  var dw = (size1.w+size2.w)/2;
+  if (dx <= dw){
+    if (dy <= dh){
       return true;
     }
     else return false;
@@ -101,7 +105,7 @@ function interceptBullet(obj){
       }
   }
   return false;
-}
+} */
 /*function interceptTank(obj){
   var  size = elSize(obj);
   for (i=0 ; i<bots.length; i++){
@@ -127,13 +131,13 @@ function interceptBullet(obj){
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
   function tankMove(e, tank) {
-   
+    if (tank.explitIntercept(bullets))
     switch (e) {
             
           
               case 37:
               tank.x -= tank.speed;
-              pass=passfinding(tank);
+              pass= ( passfinding(tank) || !tank.explitIntercept(bots) );
               if (tank.caseOn!=37 || pass!=true) {tank.x +=tank.speed;}
               tank.caseOn=37;
               if (tank.position == tank.left.alt) {
