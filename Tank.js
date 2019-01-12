@@ -25,6 +25,8 @@ function Tank(X,Y,type) {
   this.enemy = false;
   this.speed = 2;
   }
+  Tank.prototype = Object.create(TankInterceptor.prototype) ;
+  Tank.prototype.constructor = Tank ;  
   Tank.prototype.getImage=function(tankType, direction,alternative) {
        var src="";
       switch (tankType){
@@ -39,8 +41,7 @@ function Tank(X,Y,type) {
       image.src=src;
       return image;
     }
-  Tank.prototype.explitIntercept = (new TankInterceptor()).explitIntercept;
-//  Tank.prototype.intercept = (new TankInterceptor()).intercept;
+  
 
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
@@ -53,6 +54,7 @@ var move_count= 1;
 mainTank.position=mainTank.up.main;
 var fps = 1000/60;
 var bullets = [];
+var pass = true;
 
 
 
@@ -65,20 +67,20 @@ function mainTankMove(e){
 }
 function passfinding(obj){
   size = elSize (obj);
-      a = true;
   if (size.y1<0 || size.y2>26 || size.x1 < 0 || size.x2 > 26){
-    a = false;
-    return a;
+    return false;
   }
+  else {
   for (var j = size.y1; j <= size.y2; j++) {
       for (var i = size.x1; i <= size.x2; i++) {
           if (map[j][i] != '0') {
-              a = false;
-              return a;
+              return false;
           }
       }
 
   }
+  return true;
+}
 } 
 
 /*function intercept(obj1,obj2){

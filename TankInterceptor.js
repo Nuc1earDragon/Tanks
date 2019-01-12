@@ -6,15 +6,16 @@ TankInterceptor.prototype.explitIntercept = function(obj) {
         if((obj[i].x == this.x) && (obj[i].y == this.y)) {
             continue;
         }
+        console.log(i);
         if (this.intercept(this, obj[i])) {
             return true;
         }
     }
-    if ((this.caseOn != undefined) && (this != mainTank)) {
+    if ( this != mainTank) {
         if (this.intercept(this, mainTank)) {
             return true;
         }
+        else return false;
     }
-    else
-        return false;
+    else return false;    
 }
