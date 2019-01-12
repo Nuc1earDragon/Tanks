@@ -39,8 +39,8 @@ function Tank(X,Y,type) {
       image.src=src;
       return image;
     }
-  Tank.prototype.explitIntercept = new TankInterceptor().explitIntercept;
-
+  Tank.prototype.explitIntercept = (new TankInterceptor()).explitIntercept;
+//  Tank.prototype.intercept = (new TankInterceptor()).intercept;
 
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
@@ -65,18 +65,20 @@ function mainTankMove(e){
 }
 function passfinding(obj){
   size = elSize (obj);
-  var i2 = 0, 
-      j2 = 0, 
       a = true;
-  for (j2 = size.y1; j2 <= size.y2; j2++) {
-      for (i2 = size.x1; i2 <= size.x2; i2++) {
-          if (map[j2][i2] != '0') {
+  if (size.y1<0 || size.y2>26 || size.x1 < 0 || size.x2 > 26){
+    a = false;
+    return a;
+  }
+  for (var j = size.y1; j <= size.y2; j++) {
+      for (var i = size.x1; i <= size.x2; i++) {
+          if (map[j][i] != '0') {
               a = false;
+              return a;
           }
       }
 
   }
-  return a;
 } 
 
 /*function intercept(obj1,obj2){
@@ -131,13 +133,13 @@ function interceptBullet(obj){
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
   function tankMove(e, tank) {
-    if (tank.explitIntercept(bullets))
+   // if (tank.explitIntercept(bullets))
     switch (e) {
             
           
               case 37:
               tank.x -= tank.speed;
-              pass= ( passfinding(tank) || !tank.explitIntercept(bots) );
+              pass= ( (passfinding(tank)) && (!tank.explitIntercept(bots)) );
               if (tank.caseOn!=37 || pass!=true) {tank.x +=tank.speed;}
               tank.caseOn=37;
               if (tank.position == tank.left.alt) {
@@ -151,7 +153,7 @@ function interceptBullet(obj){
           
               case 38:
               tank.y -= tank.speed;
-              pass=passfinding(tank);
+              pass=( (passfinding(tank)) && (!tank.explitIntercept(bots)) );
               if (tank.caseOn!=38 || pass!=true) {tank.y +=tank.speed;}
               tank.caseOn=38;
               if (tank.position == tank.up.alt) {
@@ -164,7 +166,7 @@ function interceptBullet(obj){
 
               case 39:
               tank.x += tank.speed;
-              pass=passfinding(tank);
+              pass=( (passfinding(tank)) && (!tank.explitIntercept(bots)) );
               if (tank.caseOn!=39 || pass!=true) {tank.x -=tank.speed;}
              tank.caseOn=39;
               if (tank.position == tank.right.alt) {
@@ -177,7 +179,7 @@ function interceptBullet(obj){
 
               case 40:
               tank.y += tank.speed;
-              pass=passfinding(tank);
+              pass=( (passfinding(tank)) && (!tank.explitIntercept(bots)) );
               if (tank.caseOn!=40 || pass!=true) {tank.y -=tank.speed;}
               tank.caseOn=40;
               if (tank.position == tank.down.alt) {
