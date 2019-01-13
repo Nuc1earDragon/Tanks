@@ -17,18 +17,24 @@ function createBot(){
 }
 function botMove(){
     time++;
-    for (b=0; b<bots.length;b++){
-        context.drawImage(bots[b].position, bots[b].x, bots[b].y,32,32);
-        AInt(bots[b]);
-        tankMove(bots[b].AI, bots[b]);
+    for (var i=0; i<bots.length;i++){
+        context.drawImage(bots[i].position, bots[i].x, bots[i].y,32,32);
+        if (bots[i].speed == 0){
+            continue;
+        }
+        AInt(bots[i]);
+        tankMove(bots[i].AI, bots[i]);
         if ((time/20) - (parseInt(time/20))==0){
             var randBullet=parseInt(100*Math.random());
             if (randBullet<50){
-                tankBullet(32, bots[b]);
+                tankBullet(32, bots[i]);
             }
         }
        
     }
+    bots = bots.filter(function(Tank){
+        return !Tank.crashed ;
+        });
 }
 function AInt(Tank){
     var path = AItraking(Tank);

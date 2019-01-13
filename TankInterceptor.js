@@ -1,13 +1,12 @@
 function TankInterceptor(){};
 TankInterceptor.prototype = Object.create(Interceptor.prototype);
 TankInterceptor.prototype.constructor = TankInterceptor;
-TankInterceptor.prototype.explitIntercept = function(obj) {
-    for (var i = 0; i < obj.length; i++) {
-        if((obj[i].x == this.x) && (obj[i].y == this.y)) {
+TankInterceptor.prototype.explitIntercept = function() {
+    for (var i = 0; i < bots.length; i++) {
+        if((bots[i].x == this.x) && (bots[i].y == this.y)) {
             continue;
         }
-        console.log(i);
-        if (this.intercept(this, obj[i])) {
+        if (this.intercept(this, bots[i])) {
             return true;
         }
     }

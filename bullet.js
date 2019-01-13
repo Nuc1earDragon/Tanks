@@ -9,14 +9,23 @@ function Bullet(X, Y, bulletPos ) {
     this.crashIcon.src="./img/hit1.png";
     this.speed = 2;
   }
-  Bullet.prototype.getCrashed = function (bullet){
-      if (bullet.crashed == true){
+  Bullet.prototype = Object.create(BulletInterceptor.prototype) ;
+  Bullet.prototype.constructor = Bullet ;  
+  Bullet.prototype.getImage = function(bulletPos) {
+    var src="";
+    src="./img/bullet-" + bulletPos + ".png";
+    var image= new Image();
+    image.src=src;
+    return image;
+  };
+  Bullet.prototype.getCrashed = function (){
+      if (this.crashed == true){
           return;
       };
         var i1 = 0;
         var j1 = 0;
-        for (x=bullet.x+1; x<=(bullet.x+7); x+=6){
-            for (y=bullet.y+1; y<=(bullet.y+7); y+=6){
+        for (x=this.x+1; x<=(this.x+7); x+=6){
+            for (y=this.y+1; y<=(this.y+7); y+=6){
                 i1 = parseInt(x / 16);
                 j1 = parseInt(y / 16);
                 if (i1>25 || j1>25) {
@@ -27,22 +36,18 @@ function Bullet(X, Y, bulletPos ) {
                 }      
             } 
         }
-        bullet.image = bullet.crashIcon;
-        bullet.x-=10;
-        bullet.y-=10;
-        bullet.speed = 0;
-        setTimeout(function(){destroy(bullet)}, 300);
+        this.image = this.crashIcon;
+        this.x-=10;
+        this.y-=10;
+        this.speed = 0;
+        var a = this;
+        setTimeout(function(){destroy(a)}, 300);
     }
-  Bullet.prototype.getImage = function(bulletPos) {
-      var src="";
-      src="./img/bullet-" + bulletPos + ".png";
-      var image= new Image();
-      image.src=src;
-      return image;
-    };
+  
 
-function destroy (bullet) {
-        bullet.crashed = true ;
+function destroy (obj) {
+    console.log(obj);
+        obj.crashed = true ;
     }
 function mainTankBullet(e){
         tankBullet(e.keyCode, mainTank);
@@ -65,9 +70,10 @@ function isOnMap(bullet) {
 function isBulletCrashed(bullet) {
     var bulletCrash = false;
     if (isOnMap(bullet)) {
-        bulletCrash = passfinding(bullet);
+        bulletCrash = !passfinding(bullet);
+
     }
-    return !bulletCrash;
+    return bulletCrash;
 }
 function bulletFly() {
     for (var k = 0; k < bullets.length; k++) {
@@ -89,11 +95,11 @@ function bulletFly() {
         };
 
         if (isBulletCrashed(bullets[k])) {
-            bullets[k].getCrashed(bullets[k]);
+            bullets[k].getCrashed();
         }
-    /*    if (interceptBullet(bullets[k])) {
+        if (bullets[k].explitIntercept()) {
             bullets[k].crashed = true;
-        } */
+        } 
         }
     }
     bullets = bullets.filter(function(bullet){
