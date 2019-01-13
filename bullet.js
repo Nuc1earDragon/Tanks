@@ -46,7 +46,6 @@ function Bullet(X, Y, bulletPos ) {
   
 
 function destroy (obj) {
-    console.log(obj);
         obj.crashed = true ;
     }
 function mainTankBullet(e){
