@@ -36,33 +36,33 @@ function botMove(){
         return !Tank.crashed ;
         });
 }
-function AInt(Tank){
-    var path = AItraking(Tank);
+function AInt(tank){
+    var path = AItraking(tank);
     if (path && typeof path[2] !== 'undefined') {
     var dy=path[2][0];
     var dx=path [2][1];
-    var cx=Tank.x;
-    var cy=Tank.y;
+    var cx=tank.x;
+    var cy=tank.y;
     if (dx>cx) {
-        Tank.AI= 39;
+        tank.AI= 39;
     }
     if (dx<cx) {
-        Tank.AI= 37;
+        tank.AI= 37;
     }
     if (dy>cy) {
-        Tank.AI= 40;
+        tank.AI= 40;
     }
     if (dy<cy) {
-        Tank.AI= 38;
+        tank.AI= 38;
     }
     }
 }
-function AItraking(Tank){
+function AItraking(tank){
   //  var track =[][];
     var start = {x:0, y:0};
     var target={x:0, y:0};
-    start.x=Tank.x;
-    start.y=Tank.y;
+    start.x=tank.x;
+    start.y=tank.y;
     target.x = mainTank.x;
     target.y = mainTank.y;
  //   track[parseInt(start.x/26)][parseInt(start.y/26)]=0;

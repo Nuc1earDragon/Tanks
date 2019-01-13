@@ -99,55 +99,6 @@ function passfinding(obj){
 }
 } 
 
-/*function intercept(obj1,obj2){
-  var  size1 = elSize(obj1);
-  var  size2 = elSize(obj2);
-  var  dSizeX =  (size1.h - size2.h) /2 ;
-  var  dSizeY =  (size1.w - size2.w) /2 ;
-  var dx = Math.abs(obj1.x - obj2.x - dSizeX);
-  var dy = Math.abs(obj1.y - obj2.y - dSizeY);
-  var dh = (size1.h+size2.h)/2;
-  var dw = (size1.w+size2.w)/2;
-  if (dx <= dw){
-    if (dy <= dh){
-      return true;
-    }
-    else return false;
-  }
-  else return false;
-}
-function interceptBullet(obj){
-  for (i=0 ; i<bullets.length; i++){
-      if (obj.enemy != bullets[i].enemy){
-        if (intercept(obj, bullets[i])){
-          return true;
-        }
-      }
-  }
-  return false;
-} */
-/*function interceptTank(obj){
-  var  size = elSize(obj);
-  for (i=0 ; i<bots.length; i++){
-    var x = bots[i].x,
-        y = bots[i].y;
-      if (x == obj.x && y == obj.y){
-        continue;
-      }
-      if (obj.x <= x && x <= (obj.x+size.w)){
-        if (obj.y <= y && y <= (obj.y+size.h)){
-          return true;
-        }
-      }
-  }
-  if (!obj.enemy){
-    if (obj.x <= x && x <= (obj.x+size.w)){
-      if (obj.y <= y && y <= (obj.y+size.h)){
-        return true;
-      }
-    }
-  }
-} */
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
   function tankMove(e, tank) {
