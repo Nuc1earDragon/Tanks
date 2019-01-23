@@ -1,7 +1,7 @@
 function BulletInterceptor(){};
 BulletInterceptor.prototype = Object.create(Interceptor.prototype);
 BulletInterceptor.prototype.constructor = BulletInterceptor;
-BulletInterceptor.prototype.explitIntercept = function() {
+BulletInterceptor.prototype.publicIntercept = function() {
     for (var i=0 ; i<bullets.length; i++){
         if (this.enemy != bullets[i].enemy){
             if (this.intercept(this, bullets[i])){

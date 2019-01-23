@@ -28,9 +28,9 @@ function Tank(X,Y,type) {
   this.crashed = false;
   this.crashIcon = new Image();
   this.crashIcon.src="./img/hit2.png";
+  this.publicIntercept = new TankInterceptor().publicIntercept; 
   }
-  Tank.prototype = Object.create(TankInterceptor.prototype) ;
-  Tank.prototype.constructor = Tank ;  
+  
   Tank.prototype.getImage=function(tankType, direction,alternative) {
        var src="";
       switch (tankType){
@@ -102,13 +102,13 @@ function passfinding(obj){
 //**************************************************************************************************************************************************
 //**************************************************************************************************************************************************
   function tankMove(e, tank) {
-   // if (tank.explitIntercept(bullets))
+   // if (tank.publicIntercept(bullets))
     switch (e) {
             
           
               case 37:
               tank.x -= tank.speed;
-              pass= ( (passfinding(tank)) && (!tank.explitIntercept()) );
+              pass= ( (passfinding(tank)) && (!tank.publicIntercept()) );
               if (tank.caseOn!=37 || pass!=true) {tank.x +=tank.speed;}
               tank.caseOn=37;
               if (tank.position == tank.left.alt) {
@@ -122,7 +122,7 @@ function passfinding(obj){
           
               case 38:
               tank.y -= tank.speed;
-              pass=( (passfinding(tank)) && (!tank.explitIntercept()) );
+              pass=( (passfinding(tank)) && (!tank.publicIntercept()) );
               if (tank.caseOn!=38 || pass!=true) {tank.y +=tank.speed;}
               tank.caseOn=38;
               if (tank.position == tank.up.alt) {
@@ -135,7 +135,7 @@ function passfinding(obj){
 
               case 39:
               tank.x += tank.speed;
-              pass=( (passfinding(tank)) && (!tank.explitIntercept()) );
+              pass=( (passfinding(tank)) && (!tank.publicIntercept()) );
               if (tank.caseOn!=39 || pass!=true) {tank.x -=tank.speed;}
              tank.caseOn=39;
               if (tank.position == tank.right.alt) {
@@ -148,7 +148,7 @@ function passfinding(obj){
 
               case 40:
               tank.y += tank.speed;
-              pass=( (passfinding(tank)) && (!tank.explitIntercept()) );
+              pass=( (passfinding(tank)) && (!tank.publicIntercept()) );
               if (tank.caseOn!=40 || pass!=true) {tank.y -=tank.speed;}
               tank.caseOn=40;
               if (tank.position == tank.down.alt) {
