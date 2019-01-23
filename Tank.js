@@ -6,17 +6,14 @@ function Tank(X,Y,type) {
   this.left= {
   main : this.getImage(type, "left", "s1"),
   alt : this.getImage(type, "left", "s2"),
-//  hit: this.getImage(type, "left", "blink"),
   };
   this.right= {
     main : this.getImage(type, "right", "s1"),
     alt : this.getImage(type, "right", "s2"),
- //   hit: this.getImage(type, "right", "blink"),
     };
   this.down= {
     main : this.getImage(type, "down", "s1"),
     alt:  this.getImage(type, "down", "s2"),
- //   hit: this.getImage(type, "down", "blink"),
     };
   this.x= X;
   this.y= Y;
