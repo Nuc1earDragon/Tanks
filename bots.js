@@ -6,6 +6,8 @@ function createBot(){
     if (bots.length<3){
         var newBot= new Tank(startBotX,0,"bot");
         newBot.AI=40; 
+        newBot.speed = 1;
+        newBot.enemy = true;
         bots.push(newBot);
         startBotX+=192;
         if (startBotX> 400){
@@ -15,46 +17,52 @@ function createBot(){
 }
 function botMove(){
     time++;
-    for (b=0; b<bots.length;b++){
-        context.drawImage(bots[b].position, bots[b].x, bots[b].y,30,30);
-        AInt(bots[b]);
-        tankMove(bots[b].AI, bots[b],1);
+    for (var i=0; i<bots.length;i++){
+        context.drawImage(bots[i].position, bots[i].x, bots[i].y,32,32);
+        if (bots[i].speed == 0){
+            continue;
+        }
+        AInt(bots[i]);
+        tankMove(bots[i].AI, bots[i]);
         if ((time/20) - (parseInt(time/20))==0){
             var randBullet=parseInt(100*Math.random());
             if (randBullet<50){
-                tankBullet(32, bots[b],true);
+                tankBullet(32, bots[i]);
             }
         }
        
     }
+    bots = bots.filter(function(Tank){
+        return !Tank.crashed ;
+        });
 }
-function AInt(Tank){
-    var path = AItraking(Tank);
+function AInt(tank){
+    var path = AItraking(tank);
     if (path && typeof path[2] !== 'undefined') {
     var dy=path[2][0];
     var dx=path [2][1];
-    var cx=Tank.x;
-    var cy=Tank.y;
+    var cx=tank.x;
+    var cy=tank.y;
     if (dx>cx) {
-        Tank.AI= 39;
+        tank.AI= 39;
     }
     if (dx<cx) {
-        Tank.AI= 37;
+        tank.AI= 37;
     }
     if (dy>cy) {
-        Tank.AI= 40;
+        tank.AI= 40;
     }
     if (dy<cy) {
-        Tank.AI= 38;
+        tank.AI= 38;
     }
     }
 }
-function AItraking(Tank){
+function AItraking(tank){
   //  var track =[][];
     var start = {x:0, y:0};
     var target={x:0, y:0};
-    start.x=Tank.x;
-    start.y=Tank.y;
+    start.x=tank.x;
+    start.y=tank.y;
     target.x = mainTank.x;
     target.y = mainTank.y;
  //   track[parseInt(start.x/26)][parseInt(start.y/26)]=0;
@@ -108,14 +116,10 @@ function AItraking(Tank){
                 if ((0>x1)||(x1>H)||(0>y1)||(y1>W)){
                     continue;
                 }
-            //  try {
                 if ( grid[x1][y1] === 0 ) {
-            //      stop = false;
+
                   grid[x1][y1] = d + 1;
                 }
-          //    } catch (e) {
-           //     console.log(x + dx[k], e);
-          //    }
             }
           }
           }
@@ -151,7 +155,6 @@ function AItraking(Tank){
         d--;
         }
       
-     //   path[0] = [ax, ay];
       
         for (var p = path.length-1 ; p>0;p--) {
         path[p] = [path[p][0] * 16, path[p][1] * 16];

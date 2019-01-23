@@ -1,179 +1,172 @@
-  var crashedBullets=[];
-  function CrashedBullet(X,Y){
-      this.x = X;
-      this.y = Y;
-      this.time;
-      this.Image= {
-          main: getImage('main') ,
-          alt:getImage('alt')
+function Bullet(X, Y, bulletPos ) {
+    this.image = this.getImage(bulletPos);
+    this.x= X;
+    this.y= Y;
+    this.bulletPos= bulletPos;
+    this.enemy = false;
+    this.crashed = false;
+    this.crashIcon = new Image();
+    this.crashIcon.src="./img/hit1.png";
+    this.speed = 2;
+  }
+  Bullet.prototype = Object.create(BulletInterceptor.prototype) ;
+  Bullet.prototype.constructor = Bullet ;  
+  Bullet.prototype.getImage = function(bulletPos) {
+    var src="";
+    src="./img/bullet-" + bulletPos + ".png";
+    var image= new Image();
+    image.src=src;
+    return image;
+  };
+  Bullet.prototype.getCrashed = function (){
+      if (this.crashed == true){
+          return;
       };
-      function getImage(arg){
-          var scr="";
-          if (arg="main"){
-              src="./img/hit1.png";
-          }
-          if (arg="alt"){
-              src="./img/hit2.png";
-          }
-          var image=new Image();
-          image.src=src;
-          return image;
-      }
+        var i1 = 0;
+        var j1 = 0;
+        for (x=this.x+1; x<=(this.x+7); x+=6){
+            for (y=this.y+1; y<=(this.y+7); y+=6){
+                i1 = parseInt(x / 16);
+                j1 = parseInt(y / 16);
+                if (i1>25 || j1>25) {
+                    continue;
+                }
+                if (isNotSteel(j1,i1)){
+                    map[j1][i1] = 0;
+                }      
+            } 
+        }
+        this.image = this.crashIcon;
+        this.x-=10;
+        this.y-=10;
+        this.speed = 0;
+        var a = this;
+        setTimeout(function(){destroy(a)}, 300);
     }
+  
 
-    function drawCrash(){
-        for (i= 0 ; i<crashedBullets.length;i++){
-            context.drawImage(crashedBullets[i].Image.main,crashedBullets[i].x-4, crashedBullets[i].y-4);
-            crashedBullets[i].time++;
-            if (crashedBullets[i].time==30){
-                crashedBullets.splice(i,1);
-            }
-        }
+function destroy (obj) {
+        obj.crashed = true ;
     }
-    function passfindingBullet(Bullet) {
-        x1=parseInt((Bullet.x)/16);
-        y1=parseInt((Bullet.y+1)/16); 
-        x2=parseInt((Bullet.x+7)/16);
-        y2=parseInt((Bullet.y+7)/16);
-        if (x2>25){x2=25};
-        if (y2>25){y2=25};
-        var i2=0,j2=0;
-        for ( j2=y1;j2<=y2;j2++){
-              for ( i2=x1;i2<=x2;i2++){
-                if (map[j2][i2]=='S') {
-                    return 'Steel'}
-                if (map[j2][i2]=='K') {
-                  return true}
-              }
-                      
-            }    
-        return false;    
-        }
-  function battlefield(arg, k){
-    if ((arg.x<0) || (arg.x>canvas.width)||(arg.y<0)||(arg.y>canvas.height)){
-        bullets.splice(k,1);
+function mainTankBullet(e){
+        tankBullet(e.keyCode, mainTank);
+      }
+
+function isNotSteel(j1, i1) {
+   if  (map[j1][i1] !== 'S'){
+       return true;
+   }
+    else return false;    
+}
+function isOnMap(bullet) {
+    if ((bullet.x < 0) || (bullet.x+8> canvas.width) || (bullet.y < 0) || (bullet.y+8> canvas.height)) {
+        bullet.crashed = true ;
         return false;
     }
     else return true;
-    
-  }
-  function bulletFly(){
-      var bulletCrash = false;
-    for (var k=0; k<bullets.length; k++){
-        context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y,8,8);
-       
-        switch (bullets[k].bulletPos){
+
+}
+function isBulletCrashed(bullet) {
+    var bulletCrash = false;
+    if (isOnMap(bullet)) {
+        bulletCrash = !passfinding(bullet);
+
+    }
+    return bulletCrash;
+}
+function bulletFly() {
+    for (var k = 0; k < bullets.length; k++) {
+        context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y);
+        if (bullets[k].speed != 0){
+        switch (bullets[k].bulletPos) {
             case "left":
-            bullets[k].x-=bullets[k].speed;
-            pass=battlefield(bullets[k], k);
-            if (pass == true ) {bulletCrash=passfindingBullet(bullets[k]);}
-            break;
+                bullets[k].x -= bullets[k].speed;
+                break;
             case "up":
-            bullets[k].y-=bullets[k].speed;
-            pass=battlefield(bullets[k], k);
-            if (pass == true ) {
-            bulletCrash=passfindingBullet(bullets[k]);}
-            break;
+                bullets[k].y -= bullets[k].speed;
+                break;
             case "right":
-            bullets[k].x+=bullets[k].speed;
-            pass=battlefield(bullets[k], k);
-            if (pass == true ) {
-            bulletCrash=passfindingBullet(bullets[k]);}
-            break;
+                bullets[k].x += bullets[k].speed;
+                break;
             case "down":
-            bullets[k].y+=bullets[k].speed;
-            pass=battlefield(bullets[k], k);
-            if (pass == true ) {
-            bulletCrash=passfindingBullet(bullets[k]);}
-            break;
+                bullets[k].y += bullets[k].speed;
+                break;
         };
 
-        
-        
-        if (bulletCrash==true){
-            var i1=0;
-            var j1=0;
-            newBullet = new CrashedBullet(bullets[k].x, bullets[k].y);
-            newBullet.time = 0;
-            crashedBullets.push(newBullet);
-            i1=parseInt((bullets[k].x+1)/16);
-            j1=parseInt((bullets[k].y+1)/16);
-            map[j1][i1]=0;
-            i1=parseInt((bullets[k].x+7)/16);
-            map[j1][i1]=0;
-            j1=parseInt((bullets[k].y+7)/16);
-            map[j1][i1]=0;
-            i1=parseInt((bullets[k].x+1)/16);
-            map[j1][i1]=0;
-            bullets.splice(k,1);
+        if (isBulletCrashed(bullets[k])) {
+            bullets[k].getCrashed();
         }
-        if (bulletCrash=='Steel'){
-            bullets.splice(k,1);
-        }
+        if (bullets[k].publicIntercept()) {
+            bullets[k].crashed = true;
         } 
+        }
     }
-    function tankBullet(e, Tank,enemy){
-        if (e==32){
-            switch (Tank.caseOn){
-                case 37:
-           
-                var newBullet = new Bullet(Tank.x,Tank.y,"left");
-                newBullet.x= Tank.x-8;
-                newBullet.y= Tank.y+10;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+    bullets = bullets.filter(function(bullet){
+    return !bullet.crashed ;
+    });
+}
+function tankBullet(e, tank) {
+    if (e == 32) {
+        switch (tank.caseOn) {
+            case 37:
+
+                var newBullet = new Bullet(tank.x, tank.y, "left");
+                newBullet.x = tank.x - 8;
+                newBullet.y = tank.y + 10;
                 break;
 
-                case 38:
-                
-                var newBullet = new Bullet(Tank.x,Tank.y,"up")
-                newBullet.x= Tank.x+12;
-                newBullet.y=Tank.y-8;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+            case 38:
+
+                var newBullet = new Bullet(tank.x, tank.y, "up")
+                newBullet.x = tank.x + 12;
+                newBullet.y = tank.y - 8;
                 break;
 
-                case 39:
-                
-                var newBullet = new Bullet(Tank.x,Tank.y,"right")
-                newBullet.x= Tank.x+30;
-                newBullet.y=Tank.y+10;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+            case 39:
+
+                var newBullet = new Bullet(tank.x, tank.y, "right")
+                newBullet.x = tank.x + 30;
+                newBullet.y = tank.y + 10;
                 break;
 
-                case 40:
-                
-                var newBullet = new Bullet(Tank.x,Tank.y,"down")
-                newBullet.x= Tank.x+12;
-                newBullet.y=Tank.y+30;
-                newBullet.enemy = enemy;
-                bullets.push(newBullet);
+            case 40:
+
+                var newBullet = new Bullet(tank.x, tank.y, "down")
+                newBullet.x = tank.x + 12;
+                newBullet.y = tank.y + 30;
                 break;
 
-            }
-        if (Tank!=mainTank) {bullets[bullets.length-1].enemy=true}; 
         }
-
+        newBullet.enemy = tank.enemy;
+        bullets.push(newBullet);
     }
-    function elSize(el, type){
-        var size = {
-            x1: new Number(),
-            x2: new Nubmer(),
-            y1: new Number(),
-            y2: new Number()
-        }
-        if (type=="tank"){
-            size.x1=parseInt((el.x)/16);
-            size.y1=parseInt((el.y)/16); 
-            size.x2=parseInt((el.x+31)/16);
-            size.y2=parseInt((el.y+31)/16);
-        }
-        if (type=="bullet"){
-            size.x1=parseInt((el.x)/16);
-            size.y1=parseInt((el.y+1)/16); 
-            size.x2=parseInt((el.x+7)/16);
-            size.y2=parseInt((el.y+7)/16);
-        }
-        return size;
+
+}
+
+function elSize(el) {
+    var size = {
+        x1: new Number(),
+        x2: new Number(),
+        y1: new Number(),
+        y2: new Number(),
+        w: new Number(),
+        h: new Number()
     }
+    if (el.bulletPos != undefined ) {
+        size.x1 = parseInt((el.x) / 16);
+        size.y1 = parseInt((el.y + 1) / 16);
+        size.x2 = parseInt((el.x + 7) / 16);
+        size.y2 = parseInt((el.y + 7) / 16);
+        size.w = 7;
+        size.h=7;
+    }
+    else {
+        size.x1 = parseInt((el.x) / 16);
+        size.y1 = parseInt((el.y) / 16);
+        size.x2 = parseInt((el.x + 31) / 16);
+        size.y2 = parseInt((el.y + 31) / 16);
+        size.w= 31;
+        size.h= 31;
+    }
+    return size;
+}
