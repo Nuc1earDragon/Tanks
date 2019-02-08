@@ -1,6 +1,8 @@
                 window.onload = function() {
-                    drawMap();
-                    context.drawImage(mainTank.up.main, mainTank.x, mainTank.y,30,30);
+                    game = new Game();
+                    map = new Map(game);
+                    map.drawMap(game);
+                    game.context.drawImage(game.mainTank.up.main, game.mainTank.x, game.mainTank.y,30,30);
                     
                     window.addEventListener("keydown", mainTankMove);
                    
@@ -8,11 +10,11 @@
 
                    
                        setInterval(function (){
-                        drawMap();
-                        context.drawImage(mainTank.position, mainTank.x, mainTank.y,30,30);
-                        bulletFly();
+                        map.drawMap(game);
+                        game.context.drawImage(game.mainTank.position, game.mainTank.x, game.mainTank.y,30,30);
+                        bulletFly(game);
                         createBot();
-                        botMove();
+                        botMove(game);
                         }
                        , 25);
                        

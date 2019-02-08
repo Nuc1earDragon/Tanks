@@ -32,7 +32,7 @@ function Bullet(X, Y, bulletPos ) {
                     continue;
                 }
                 if (isNotSteel(j1,i1)){
-                    map[j1][i1] = 0;
+                    map.map[j1][i1] = 0;
                 }      
             } 
         }
@@ -49,11 +49,11 @@ function destroy (obj) {
         obj.crashed = true ;
     }
 function mainTankBullet(e){
-        tankBullet(e.keyCode, mainTank);
+        tankBullet(e.keyCode, game.mainTank);
       }
 
 function isNotSteel(j1, i1) {
-   if  (map[j1][i1] !== 'S'){
+   if  (map.map[j1][i1] !== 'S'){
        return true;
    }
     else return false;    
@@ -74,34 +74,34 @@ function isBulletCrashed(bullet) {
     }
     return bulletCrash;
 }
-function bulletFly() {
-    for (var k = 0; k < bullets.length; k++) {
-        context.drawImage(bullets[k].image, bullets[k].x, bullets[k].y);
-        if (bullets[k].speed != 0){
-        switch (bullets[k].bulletPos) {
+function bulletFly(game) {
+    for (var k = 0; k < game.bullets.length; k++) {
+        game.context.drawImage(game.bullets[k].image, game.bullets[k].x, game.bullets[k].y);
+        if (game.bullets[k].speed != 0){
+        switch (game.bullets[k].bulletPos) {
             case "left":
-                bullets[k].x -= bullets[k].speed;
+                game.bullets[k].x -= game.bullets[k].speed;
                 break;
             case "up":
-                bullets[k].y -= bullets[k].speed;
+                game.bullets[k].y -= game.bullets[k].speed;
                 break;
             case "right":
-                bullets[k].x += bullets[k].speed;
+                game.bullets[k].x += game.bullets[k].speed;
                 break;
             case "down":
-                bullets[k].y += bullets[k].speed;
+                game.bullets[k].y += game.bullets[k].speed;
                 break;
         };
 
-        if (isBulletCrashed(bullets[k])) {
-            bullets[k].getCrashed();
+        if (isBulletCrashed(game.bullets[k])) {
+            game.bullets[k].getCrashed();
         }
-        if (bullets[k].publicIntercept()) {
-            bullets[k].crashed = true;
+        if (game.bullets[k].publicIntercept()) {
+            game.bullets[k].crashed = true;
         } 
         }
     }
-    bullets = bullets.filter(function(bullet){
+    game.bullets = game.bullets.filter(function(bullet){
     return !bullet.crashed ;
     });
 }
@@ -138,7 +138,7 @@ function tankBullet(e, tank) {
 
         }
         newBullet.enemy = tank.enemy;
-        bullets.push(newBullet);
+        game.bullets.push(newBullet);
     }
 
 }
