@@ -52,6 +52,10 @@ function Tank(X,Y,type) {
         this.position = this.crashIcon;
         this.speed = 0;
         var a = this;
+        if (this == game.mainTank){
+          window.removeEventListener("keydown", mainTankMove);      
+          window.removeEventListener("keydown", mainTankBullet);
+        }
         setTimeout(function(){destroy(a)}, 500);
     }
     else return;

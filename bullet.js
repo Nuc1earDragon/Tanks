@@ -46,8 +46,15 @@ function Bullet(X, Y, bulletPos ) {
   
 
 function destroy (obj) {
-        obj.crashed = true ;
+    if (obj.crashed == true){
+        return;
     }
+        obj.crashed = true ;
+        if (obj == game.mainTank){
+            setTimeout(game.death(), 100);
+        }
+        }
+    
 function mainTankBullet(e){
         tankBullet(e.keyCode, game.mainTank);
       }

@@ -40,7 +40,7 @@ this.images.background.src="./img/2.png"
 
 
 
-this.drawMap= function(game){
+this.draw= function(game){
     game.context.drawImage(this.images.background,0,0, game.canvas.width, game.canvas.height);
     for (var j=0; j<26; j++)
       for (var i=0; i<26; i++) {
