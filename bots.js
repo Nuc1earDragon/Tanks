@@ -12,7 +12,7 @@ function createBot(){
         }
     }
 }
-function botMove(game){
+function botMove(){
     game.time++;
     for (var i=0; i<game.bots.length;i++){
         game.context.drawImage(game.bots[i].position, game.bots[i].x, game.bots[i].y,32,32);

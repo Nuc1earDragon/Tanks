@@ -17,13 +17,13 @@ this.canvas.height = 26*this.cellSize;
 Game.prototype.death = function(){
 
     window.addEventListener('keydown', game.restart);
-    clearInterval(int);
+    clearInterval(game.mainInterval);
 
-    fontSize = 40;
-    n = true;
-    deathMusic();
-    int2 = setInterval(function(){
-        map.draw(game);
+    game.deathFontSize = 40;
+    game.increaseFontSize = true;
+    playDeathMusic();
+    game.restartInterval = setInterval(function(){
+        map.draw();
         game.context.drawImage(game.mainTank.position, game.mainTank.x, game.mainTank.y,30,30);
         for (var i=0; i<game.bots.length;i++){
             game.context.drawImage(game.bots[i].position, game.bots[i].x, game.bots[i].y,32,32);
@@ -31,47 +31,46 @@ Game.prototype.death = function(){
         for (var i = 0; i < game.bullets.length; i++) {
             game.context.drawImage(game.bullets[i].image, game.bullets[i].x, game.bullets[i].y);
         }
-        lolText();
+        showLolText();
         return;
     },20)
     
 }
 Game.prototype.restart = function(e){
         if(e.keyCode=="82"){
-            game = new Game();
-            map = new Map(game);
-            clearInterval(int2);
-            window.onload();
-            deathAudio.pause();
             window.removeEventListener('keydown', game.restart);
+            clearInterval(game.restartInterval);
+            game.deathAudio.pause();
+            window.onload();
+            
         }
         return;
 }
-function lolText(){
-    if (n){
-        fontSize+=1;
-        if (fontSize>60){
-            n=false;
+function showLolText(){
+    if (game.increaseFontSize){
+        game.deathFontSize+=1;
+        if (game.deathFontSize>60){
+            game.increaseFontSize=false;
         }
     }
     else {
-        fontSize-=1;
-        if (fontSize<30){
-            n=true;
+        game.deathFontSize-=1;
+        if (game.deathFontSize<30){
+            game.increaseFontSize=true;
         }
 
     }
-    game.context.font = fontSize+'px arial';
+    game.context.font = game.deathFontSize+'px arial';
     game.context.textAlign = "center";
     game.context.fillText('LoL you died', game.canvas.width/2,game.canvas.height/2);
-    game.context.fillText('press \"R\" to restart', game.canvas.width/2,game.canvas.height/2+fontSize);
+    game.context.fillText('press \"R\" to restart', game.canvas.width/2,game.canvas.height/2+game.deathFontSize);
 
 }
-function deathMusic(){
-  deathAudio = new Audio(); 
-  deathAudio.src = 'death.mp3';
-  deathAudio.loop = true;
-  deathAudio.play();
+function playDeathMusic(){
+  game.deathAudio = new Audio(); 
+  game.deathAudio.src = 'death.mp3';
+  game.deathAudio.loop = true;
+  game.deathAudio.play();
 }
 /*Game.prototype.gameCreate = function(){
     game = new Game();

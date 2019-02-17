@@ -81,7 +81,7 @@ function isBulletCrashed(bullet) {
     }
     return bulletCrash;
 }
-function bulletFly(game) {
+function bulletFly() {
     for (var k = 0; k < game.bullets.length; k++) {
         game.context.drawImage(game.bullets[k].image, game.bullets[k].x, game.bullets[k].y);
         if (game.bullets[k].speed != 0){
