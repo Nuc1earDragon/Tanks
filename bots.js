@@ -1,38 +1,35 @@
-var bots=[];
-var startBotX=0;
-var arr= [37,38,39,40];
-var time = 0;
+
 function createBot(){
-    if (bots.length<3){
-        var newBot= new Tank(startBotX,0,"bot");
+    if (game.bots.length<3){
+        var newBot= new Tank(game.startBotX,0,"bot");
         newBot.AI=40; 
         newBot.speed = 1;
         newBot.enemy = true;
-        bots.push(newBot);
-        startBotX+=192;
-        if (startBotX> 400){
-            startBotX=0;
+        game.bots.push(newBot);
+        game.startBotX+=192;
+        if (game.startBotX> 400){
+            game.startBotX=0;
         }
     }
 }
 function botMove(){
-    time++;
-    for (var i=0; i<bots.length;i++){
-        context.drawImage(bots[i].position, bots[i].x, bots[i].y,32,32);
-        if (bots[i].speed == 0){
+    game.time++;
+    for (var i=0; i<game.bots.length;i++){
+        game.context.drawImage(game.bots[i].position, game.bots[i].x, game.bots[i].y,32,32);
+        if (game.bots[i].speed == 0){
             continue;
         }
-        AInt(bots[i]);
-        tankMove(bots[i].AI, bots[i]);
-        if ((time/20) - (parseInt(time/20))==0){
+        AInt(game.bots[i]);
+        tankMove(game.bots[i].AI, game.bots[i]);
+        if ((game.time/20) - (parseInt(game.time/20))==0){
             var randBullet=parseInt(100*Math.random());
             if (randBullet<50){
-                tankBullet(32, bots[i]);
+                tankBullet(32, game.bots[i]);
             }
         }
        
     }
-    bots = bots.filter(function(Tank){
+    game.bots = game.bots.filter(function(Tank){
         return !Tank.crashed ;
         });
 }
@@ -58,14 +55,12 @@ function AInt(tank){
     }
 }
 function AItraking(tank){
-  //  var track =[][];
     var start = {x:0, y:0};
     var target={x:0, y:0};
     start.x=tank.x;
     start.y=tank.y;
-    target.x = mainTank.x;
-    target.y = mainTank.y;
- //   track[parseInt(start.x/26)][parseInt(start.y/26)]=0;
+    target.x = game.mainTank.x;
+    target.y = game.mainTank.y;
     
         var grid = {};
         var x, y;
@@ -74,14 +69,14 @@ function AItraking(tank){
         for (x=0;x<26;x++) {
             grid[x]={};
           for (y=0; y<26;y++) {
-            grid[x][y] = map[x][y];
+            grid[x][y] = map.map[x][y];
             if ((x==25)||(y==25)) {
                 continue;
             };
-            if ((map[x+1][y]=='K')||(map[x][y+1]=='K')||(map[x+1][y+1]=='K')) {
+            if ((map.map[x+1][y]=='K')||(map.map[x][y+1]=='K')||(map.map[x+1][y+1]=='K')) {
                 grid[x][y]='K';
             };
-            if ((map[x+1][y]=='S')||(map[x][y+1]=='S')||(map[x+1][y+1]=='S')) {
+            if ((map.map[x+1][y]=='S')||(map.map[x][y+1]=='S')||(map.map[x+1][y+1]=='S')) {
                 grid[x][y]='K';
             };
           }
