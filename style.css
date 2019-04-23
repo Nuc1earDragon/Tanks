@@ -1,0 +1,6 @@
+div {
+    color: white;
+}
+div:hover {
+    color: black;
+}
