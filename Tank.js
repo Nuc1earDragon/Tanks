@@ -27,6 +27,7 @@ function Tank(X,Y,type) {
   this.crashIcon.src="./img/hit2.png";
   this.publicIntercept = new TankInterceptor().publicIntercept; 
   this.pass=true;
+  this.score = +100;
   }
   
   Tank.prototype.getImage=function(tankType, direction,alternative) {
@@ -55,6 +56,7 @@ function Tank(X,Y,type) {
         if (this == game.mainTank){
           window.removeEventListener("keydown", mainTankMove);      
           window.removeEventListener("keydown", mainTankBullet);
+          localStorage.setItem('Record'+[10],game.score);
         }
         setTimeout(function(){destroy(a)}, 500);
     }

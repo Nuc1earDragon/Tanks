@@ -50,6 +50,9 @@ function destroy (obj) {
         return;
     }
         obj.crashed = true ;
+        if (obj.bulletPos == undefined){
+            game.score+=obj.score;
+        }
         if (obj == game.mainTank){
             setTimeout(game.death(), 100);
         }

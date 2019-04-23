@@ -2,12 +2,14 @@ function Game(){
 this.mainTank = new Tank(192,208,"main");
 this.mainTank.caseOn = 38;
 this.mainTank.position=this.mainTank.up.main;
+this.mainTank.score = +0;
 this.bullets = [];
 this.bots=[];
 this.startBotX=0;
 this.time = 0;
 this.canvas = document.getElementById("canvas");
 this.context = this.canvas.getContext("2d");
+this.score = +0;
 
 this.cellSize = 16;
 this.canvas.width = 26*this.cellSize;
@@ -15,10 +17,9 @@ this.canvas.height = 26*this.cellSize;
 
 }
 Game.prototype.death = function(){
-
     window.addEventListener('keydown', game.restart);
     clearInterval(game.mainInterval);
-
+    setRecords();
     game.deathFontSize = 40;
     game.increaseFontSize = true;
     playDeathMusic();
@@ -64,6 +65,11 @@ function showLolText(){
     game.context.textAlign = "center";
     game.context.fillText('LoL you died', game.canvas.width/2,game.canvas.height/2);
     game.context.fillText('press \"R\" to restart', game.canvas.width/2,game.canvas.height/2+game.deathFontSize);
+    game.context.font = "30px arial";
+    game.context.fillStyle = "white";
+    game.context.fillText('Your score is '+game.score, game.canvas.width/2, 340);
+    game.context.font = "15px arial";
+    game.context.fillText('Record is '+localStorage.getItem('Record'+0), game.canvas.width/2, 360);
 
 }
 function playDeathMusic(){
@@ -72,6 +78,7 @@ function playDeathMusic(){
   game.deathAudio.loop = true;
   game.deathAudio.play();
 }
+
 /*Game.prototype.gameCreate = function(){
     game = new Game();
     map = new Map(game);
