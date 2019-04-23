@@ -1,3 +1,4 @@
+
                 window.onload = function() {
                     game = new Game();
                     map = new Map();
@@ -7,7 +8,7 @@
                     window.addEventListener("keydown", mainTankMove);
                    
                     window.addEventListener("keydown", mainTankBullet);
-
+                    
                    
                     game.mainInterval = setInterval(function (){
                         map.draw();
@@ -15,6 +16,10 @@
                         bulletFly();
                         createBot();
                         botMove();
+                        var score1 = document.getElementById("score1");
+                        score1.innerHTML = game.score;
+                        var records = document.getElementById("records");
+                        records.innerHTML = getRecords();
                         }
                        , 25);
                        
