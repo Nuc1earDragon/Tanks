@@ -16,10 +16,6 @@
                         bulletFly();
                         createBot();
                         botMove();
-                        var score1 = document.getElementById("score1");
-                        score1.innerHTML = game.score;
-                        var records = document.getElementById("records");
-                        records.innerHTML = getRecords();
                         }
                        , 25);
                        
